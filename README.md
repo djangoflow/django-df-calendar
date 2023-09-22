@@ -73,29 +73,48 @@ For slots I also need to have use cases:
 
 ## Abstract
 
-TimeSlot
+CalendarEntry(TimePeriod)
+- priority = 1000 = actual bookings (busy), 3000 = exceptions (avail/busy), 4500 = public holidays (busy), 5000 = normal (avail/busy), 9000 default
+- time_from: TimeField default 0:00:01
+- time_to: TimeField default 23:59:59
+- date =  nullable
+- weekday nullable
+- day_of_month nullable
 
-- time_from: TimeField
-- time_to: TimeField
-
-
-WeekdayTimeSlot
+WeekdayTimePeriod
 
 - weekday
 - time_from
 - time_to
 
 
-DateTimeSlot
+DateTimePeriod
 
 - date
 - time_from
 - time_to
 
 
+slot:
+    - avail
+    - busy
+
 ## Real
 
 ### OpenSchedule
+
+RecurrentTimePeriod
+
+WeeklyTimePeriod(RecurrentTimePeriod):
+   weekday =
+
+MonthlyTimePeriod(RecurrentTimePeriod)
+   day_of_month = 
+
+AnnualTimePeriod?
+
+DatedTimePeriod 
+    date = xxx
 
 
 OpenSchedule_WeekdayTimeSlot(WeekdayTimeSlot)
