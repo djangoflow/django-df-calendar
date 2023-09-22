@@ -75,85 +75,37 @@ For slots I also need to have use cases:
 
 CalendarEntry(TimePeriod)
 - priority = 1000 = actual bookings (busy), 3000 = exceptions (avail/busy), 4500 = public holidays (busy), 5000 = normal (avail/busy), 9000 default
-- time_from: TimeField default 0:00:01
+- time_from: TimeField default 00:00:00
 - time_to: TimeField default 23:59:59
 - date =  nullable
 - weekday nullable
 - day_of_month nullable
-
-WeekdayTimePeriod
-
-- weekday
-- time_from
-- time_to
-
-
-DateTimePeriod
-
-- date
-- time_from
-- time_to
-
-
-slot:
-    - avail
-    - busy
+- is_available = BooleanField default True
 
 ## Real
 
-### OpenSchedule
-
-RecurrentTimePeriod
-
-WeeklyTimePeriod(RecurrentTimePeriod):
-   weekday =
-
-MonthlyTimePeriod(RecurrentTimePeriod)
-   day_of_month = 
-
-AnnualTimePeriod?
-
-DatedTimePeriod 
-    date = xxx
+### OperatingHours
 
 
-OpenSchedule_WeekdayTimeSlot(WeekdayTimeSlot)
+OperatingHours
 
-- open_schedule fk
-
-OpenSchedule_DateTimeSlot(DateTimeSlot)
-
-- open_schedule fk
-- is_working: bool
-
-
-OpenSchedule
-
-- working_weekday_time_slots: many OpenScheduleWeekdayTimeSlot
-- schedule_date_exceptions: many OpenScheduleDateTimeSlot  # for day-offs in business days and vice versa
-
+- entries: many CalendarEntry
 
 
 ### AvailableSlots
 
 
-SlotSchedule_DateTimeSlot(DateTimeSlot):
+Slot(CalendarEntry)
 
-- date
-- time_from
-- time_to
-- status:
-  - free
-  - booked
+...
 
-SlotSchedule:
+SlottedMixin:
 
-- open_schedule: OpenSchedule
-- slot_duration: SlotSettings
-- slot_delay: SlotSettings
+- open_schedule: many CalendarEntry
+- slot_duration: int
+- slot_delay: int
 - planning_limit: days. (case: you cannot see/book slots for more than 30 days in the future)
-
-
+- slots: many to many Slots
 
 
 ## methods
